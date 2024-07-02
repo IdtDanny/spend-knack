@@ -26,7 +26,7 @@ export async function createInvoice(formData: FormData) {
     // console.log(rawFormData);
 
     await sql`
-        INSERT INTO invoices (customert_id, amount, status, date)
+        INSERT INTO invoices (customer_id, amount, status, date)
         VALUES (${customerId}, ${amountInCents}, ${status}, ${date})
     `;
 
