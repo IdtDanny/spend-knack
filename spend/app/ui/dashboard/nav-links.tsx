@@ -8,6 +8,7 @@ import {
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
+import { AffiliateIcon } from '@/app/ui/dashboard/account-setting-02-stroke-rounded';
 
 // Map of links to display in the side navigation.
 // Depending on the size of the application, this would be stored in a database.
@@ -17,6 +18,11 @@ const links = [
     name: 'Invoices',
     href: '/dashboard/invoices',
     icon: DocumentDuplicateIcon,
+  },
+  {
+    name: 'Expenses',
+    href: '/dashboard/expense',
+    icon: AffiliateIcon,
   },
   { name: 'Customers', href: '/dashboard/customers', icon: UserGroupIcon },
 ];
