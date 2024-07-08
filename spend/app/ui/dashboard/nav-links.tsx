@@ -8,7 +8,7 @@ import {
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
-import { AffiliateIcon } from '@/app/ui/dashboard/account-setting-02-stroke-rounded';
+import { AccountSetting02Icon, AffiliateIcon } from '@/app/ui/dashboard/account-setting-02-stroke-rounded';
 
 // Map of links to display in the side navigation.
 // Depending on the size of the application, this would be stored in a database.
@@ -25,6 +25,7 @@ const links = [
     icon: AffiliateIcon,
   },
   { name: 'Customers', href: '/dashboard/customers', icon: UserGroupIcon },
+  { name: 'My Profile', href: '/dashboard/profile', icon: AccountSetting02Icon },
 ];
 
 export default function NavLinks() {
