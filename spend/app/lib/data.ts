@@ -6,8 +6,10 @@ import {
   InvoicesTable,
   LatestInvoiceRaw,
   Revenue,
+  user,
 } from './definitions';
 import { formatCurrency } from './utils';
+import { User } from 'next-auth';
 
 export async function fetchRevenue() {
   try {
@@ -213,5 +215,47 @@ export async function fetchFilteredCustomers(query: string) {
   } catch (err) {
     console.error('Database Error:', err);
     throw new Error('Failed to fetch customer table.');
+  }
+}
+
+// export async function fetchProfile() {
+//   try {
+//     const data = await sql<user>`
+//       SELECT
+//         id,
+//         name,
+//         email
+//       FROM user 
+//       WHERE id='410544b2-4001-4271-9855-fec4b6a6442a'
+//     `;
+
+//     return data;
+//   } catch (err) {
+//     console.error('Database Error:', err);
+//     throw new Error('Failed to fetch User profile.');
+//   }
+// }
+
+
+export async function fetchProfile() {
+  try {
+    // You can probably combine these into a single SQL query
+    // However, we are intentionally splitting them to demonstrate
+    // how to initialize multiple queries in parallel with JS.
+    const username = sql`SELECT name FROM users WHERE id='410544b2-4001-4271-9855-fec4b6a6442a'`;
+    const usermail = sql`SELECT email FROM users WHERE id='410544b2-4001-4271-9855-fec4b6a6442a'`;
+
+    const data = await Promise.all([
+      username,
+      usermail,
+    ]);
+
+    return {
+      username,
+      usermail,
+    };
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch user data.');
   }
 }
