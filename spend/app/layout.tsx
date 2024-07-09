@@ -1,6 +1,8 @@
 import '@/app/ui/global.css';
 import { inter } from '@/app/ui/fonts';
 import { Metadata } from 'next';
+import { lusitana } from '@/app/ui/fonts';
+import { CopyrightIcon } from '@/app/ui/dashboard/icon-template';
 
 <link rel="icon" href="favicon.ico" />
 
