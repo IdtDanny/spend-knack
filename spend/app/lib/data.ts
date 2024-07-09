@@ -259,3 +259,19 @@ export async function fetchProfile() {
     throw new Error('Failed to fetch user data.');
   }
 }
+
+export async function fetchProfileTemp() {
+  try {
+    const data = await sql<user>`
+      SELECT id, name, email
+      FROM users
+      `;
+
+    const profileTemp = data.rows.map((profile) => ({...profile}));
+    
+    return profileTemp;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch the latest invoices.');
+  }
+}
