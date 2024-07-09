@@ -7,6 +7,7 @@ import { lusitana } from '@/app/ui/fonts';
 import { Suspense } from 'react';
 import { RevenueChartSkeleton, LatestInvoicesSkeleton, CardsSkeleton } from '@/app/ui/skeletons';
 import { Metadata } from 'next';
+// import { CopyrightIcon } from '@/app/ui/dashboard/icon-template';
 
 export const metadata: Metadata = {
 	title: 'Dashboard',
@@ -47,6 +48,7 @@ export default async function Page() {
 					<LatestInvoices />
 				</Suspense>
 			</div>
+			{/* <CopyrightIcon className={`text-l text-gray-600`} /> */}
 		</main>
 	);
 }
