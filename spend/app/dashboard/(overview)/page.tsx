@@ -1,7 +1,8 @@
 // import { Card } from '@/app/ui/dashboard/cards';
 import CardWrapper from '@/app/ui/dashboard/cards';
 import RevenueChart from '@/app/ui/dashboard/revenue-chart';
-import LatestInvoices from '@/app/ui/dashboard/latest-invoices';
+// import LatestInvoices from '@/app/ui/dashboard/latest-invoices';
+import LatestExpenses from '@/app/ui/dashboard/latest-expenses';
 import { lusitana } from '@/app/ui/fonts';
 // import { fetchRevenue, fetchLatestInvoices, fetchCardData } from '@/app/lib/data';
 import { Suspense } from 'react';
@@ -45,7 +46,7 @@ export default async function Page() {
 
 				{/* <LatestInvoices latestInvoices={latestInvoices} /> */}
 				<Suspense fallback={<LatestInvoicesSkeleton />}>
-					<LatestInvoices />
+					<LatestExpenses />
 				</Suspense>
 			</div>
 			{/* <CopyrightIcon className={`text-l text-gray-600`} /> */}

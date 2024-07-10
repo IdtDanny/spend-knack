@@ -6,6 +6,7 @@ import {
   ExpenseForm,
   InvoicesTable,
   LatestInvoiceRaw,
+  LatestExpenseRaw,
   ExpensesTable,
   Revenue,
   user,
@@ -331,5 +332,24 @@ export async function fetchReason() {
   } catch (err) {
     console.error('Database Error:', err);
     throw new Error('Failed to fetch all reasons.');
+  }
+}
+
+export async function fetchLatestExpenses() {
+  try {
+    const data = await sql<LatestExpenseRaw>`
+      SELECT expenses.reason, expenses.amount, expenses.issued_to, expenses.date
+      FROM expenses
+      ORDER BY expenses.date DESC
+      LIMIT 5`;
+
+    const latestExpenses = data.rows.map((expense) => ({
+      ...expense,
+      amount: formatCurrency(expense.amount),
+    }));
+    return latestExpenses;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch the latest expenses.');
   }
 }
