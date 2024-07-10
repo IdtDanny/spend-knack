@@ -138,3 +138,14 @@ export async function authenticate(
         throw error;
     }
 }
+
+export async function deleteExpense(id: string) {
+
+    try {
+        await sql`DELETE FROM expenses WHERE id = ${id}`;
+    } catch (error) {
+        return { message: 'Database Error: Failed to Delete Expense.' };
+    }
+
+    revalidatePath('/dashboard/expense');
+}

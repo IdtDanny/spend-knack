@@ -3,10 +3,13 @@ import {
   CustomerField,
   CustomersTableType,
   InvoiceForm,
+  ExpenseForm,
   InvoicesTable,
   LatestInvoiceRaw,
+  ExpensesTable,
   Revenue,
   user,
+  ReasonField,
 } from './definitions';
 import { formatCurrency } from './utils';
 import { User } from 'next-auth';
@@ -218,60 +221,115 @@ export async function fetchFilteredCustomers(query: string) {
   }
 }
 
-// export async function fetchProfile() {
-//   try {
-//     const data = await sql<user>`
-//       SELECT
-//         id,
-//         name,
-//         email
-//       FROM user 
-//       WHERE id='410544b2-4001-4271-9855-fec4b6a6442a'
-//     `;
-
-//     return data;
-//   } catch (err) {
-//     console.error('Database Error:', err);
-//     throw new Error('Failed to fetch User profile.');
-//   }
-// }
-
-
-export async function fetchProfile() {
-  try {
-    // You can probably combine these into a single SQL query
-    // However, we are intentionally splitting them to demonstrate
-    // how to initialize multiple queries in parallel with JS.
-    const username = sql`SELECT name FROM users WHERE id='410544b2-4001-4271-9855-fec4b6a6442a'`;
-    const usermail = sql`SELECT email FROM users WHERE id='410544b2-4001-4271-9855-fec4b6a6442a'`;
-
-    const data = await Promise.all([
-      username,
-      usermail,
-    ]);
-
-    return {
-      username,
-      usermail,
-    };
-  } catch (error) {
-    console.error('Database Error:', error);
-    throw new Error('Failed to fetch user data.');
-  }
-}
-
 export async function fetchProfileTemp() {
   try {
     const data = await sql<user>`
-      SELECT id, name, email
+      SELECT id, name, email, image_url
       FROM users
       `;
 
-    const profileTemp = data.rows.map((profile) => ({...profile}));
-    
+    const profileTemp = data.rows.map((profile) => ({ ...profile }));
+
     return profileTemp;
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch the latest invoices.');
+  }
+}
+
+// Fetch Expenses
+
+const EXPENSE_PER_PAGE = 6;
+export async function fetchFilteredExpenses(
+  query: string,
+  currentPage: number,
+) {
+  const offset = (currentPage - 1) * EXPENSE_PER_PAGE;
+
+  try {
+    const expenses = await sql<ExpensesTable>`
+      SELECT
+        expenses.id,
+        expenses.reason,
+        expenses.amount,
+        expenses.issued_to,
+        expenses.date
+      FROM expenses
+      WHERE
+        expenses.reason ILIKE ${`%${query}%`} OR
+        expenses.amount::text ILIKE ${`%${query}%`} OR
+        expenses.date::text ILIKE ${`%${query}%`} OR
+        expenses.issued_to ILIKE ${`%${query}%`}
+      ORDER BY expenses.date DESC
+      LIMIT ${EXPENSE_PER_PAGE} OFFSET ${offset}
+    `;
+
+    return expenses.rows;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch expense record.');
+  }
+}
+
+export async function fetchExpensesPages(query: string) {
+  try {
+    const count = await sql`SELECT COUNT(*)
+    FROM expenses
+    WHERE
+      expenses.reason ILIKE ${`%${query}%`} OR
+      expenses.amount::text ILIKE ${`%${query}%`} OR
+      expenses.issued_to ILIKE ${`%${query}%`} OR
+      expenses.date::text ILIKE ${`%${query}%`}
+  `;
+
+    const totalPages = Math.ceil(Number(count.rows[0].count) / EXPENSE_PER_PAGE);
+    return totalPages;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch total number of expenses.');
+  }
+}
+
+export async function fetchExpensesById(id: string) {
+  try {
+    const data = await sql<ExpenseForm>`
+      SELECT
+        expenses.id,
+        expenses.reason,
+        expenses.amount,
+        expenses.issued_to,
+        expenses.date
+      FROM expenses
+      WHERE expenses.id = ${id};
+    `;
+
+    const expense = data.rows.map((expense) => ({
+      ...expense,
+      // Convert amount from cents to dollars
+      amount: expense.amount / 100,
+    }));
+
+    return expense[0];
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch expense.');
+  }
+}
+
+export async function fetchReason() {
+  try {
+    const data = await sql<ReasonField>`
+      SELECT
+        id,
+        reason
+      FROM reason
+      ORDER BY reason ASC
+    `;
+
+    const reason = data.rows;
+    return reason;
+  } catch (err) {
+    console.error('Database Error:', err);
+    throw new Error('Failed to fetch all reasons.');
   }
 }

@@ -42,6 +42,19 @@ async function seedInvoices() {
     );
   `;
 
+  // async function seedExpenses() {
+  //   await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+
+  //   await client.sql`
+  //     CREATE TABLE IF NOT EXISTS expenses (
+  //       id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  //       reason VARCHAR(255) NOT NULL,
+  //       amount INT NOT NULL,
+  //       issued_to VARCHAR(255) NOT NULL,
+  //       date DATE NOT NULL
+  //     );
+  //   `;
+
   const insertedInvoices = await Promise.all(
     invoices.map(
       (invoice) => client.sql`

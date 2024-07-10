@@ -7,6 +7,7 @@ export type user = {
   name: string;
   email: string;
   password: string;
+  image_url: string;
 };
 
 export type Customer = {
@@ -55,6 +56,14 @@ export type InvoicesTable = {
   status: 'pending' | 'paid';
 };
 
+export type ExpensesTable = {
+  id: string;
+  reason: string;
+  amount: number;
+  issued_to: string;
+  date: string;
+};
+
 export type CustomersTableType = {
   id: string;
   name: string;
@@ -80,9 +89,22 @@ export type CustomerField = {
   name: string;
 };
 
+export type ReasonField = {
+  id: string;
+  reason: string;
+};
+
 export type InvoiceForm = {
   id: string;
   customer_id: string;
   amount: number;
   status: 'pending' | 'paid';
+};
+
+export type ExpenseForm = {
+  id: string;
+  reason: string;
+  amount: number;
+  issued_to: string;
+  date: string;
 };
