@@ -86,7 +86,7 @@ export default function Form({ customers }: { customers: ReasonField[] }) {
           </div>
         </div>
 
-        {/* Expense Amount */}
+        {/* Expense Issued_to */}
         <div className="mb-4">
           <label htmlFor="amount" className="mb-2 block text-sm font-medium">
             Enter Issuee

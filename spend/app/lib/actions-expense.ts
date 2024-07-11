@@ -11,19 +11,21 @@ import { AuthError } from 'next-auth';
 const FormSchema = z.object({
     id: z.string(),
     reason: z.string({
-        invalid_type_error: 'Please select reason for expense.',
+        invalid_type_error: 'Please select a customer.',
     }),
     amount: z.coerce
         .number()
-        .gt(0, { message: 'Please enter an amount greater than RWF 0.' }),
+        .gt(0, { message: 'Please enter an amount greater than $0.' }),
     issued_to: z.string({
-        invalid_type_error: 'Please select reason for expense.',
+        invalid_type_error: 'Please select a customer.',
     }),
     date: z.string(),
 });
 
 const CreateExpense = FormSchema.omit({ id: true, date: true });
 
+// Using Zod to update the expected types
+const UpdateExpense = FormSchema.omit({ id: true, date: true });
 
 export type State = {
     errors?: {
@@ -41,6 +43,8 @@ export async function createExpense(prevState: State, formData: FormData) {
         amount: formData.get('amount'),
         issued_to: formData.get('issued_to'),
     });
+
+    console.log(validatedFields);
 
     // If form validation fails, return errors early. Otherwise, continue.
     if (!validatedFields.success) {
@@ -64,10 +68,78 @@ export async function createExpense(prevState: State, formData: FormData) {
         `;
     } catch (error) {
         // if a database error occurs, return a more specific error.
-        return { message: 'Database Error: Failed to Add Expense.' };
+        return { message: 'Database Error: Failed to Create Invoice.' };
     }
 
     // Revalidate the cache for the invoices age and redirect the user.
     revalidatePath('/dashboard/expense');
     redirect('/dashboard/expense');
 }
+
+export async function updateExpense(
+    id: string,
+    prevState: State,
+    formData: FormData,
+) {
+    const validatedFields = UpdateExpense.safeParse({
+        reason: formData.get('reason'),
+        amount: formData.get('amount'),
+        issued_to: formData.get('issued_to'),
+    });
+
+    console.log(validatedFields);
+
+    if (!validatedFields.success) {
+        return {
+            errors: validatedFields.error.flatten().fieldErrors,
+            message: 'Missing Fields. Failed to Update Expense.',
+        };
+    }
+
+    const { reason, amount, issued_to } = validatedFields.data;
+    // const amountInCents = amount * 100;
+
+    try {
+        await sql`
+        UPDATE expenses
+        SET reason = ${reason}, amount = ${amount}, issued_to = ${issued_to}
+        WHERE id = ${id}
+        `;
+    } catch (error) {
+        return { message: 'Database Error: Failed to Update Invoice.' };
+    }
+
+    revalidatePath('/dashboard/expense');
+    redirect('/dashboard/expense');
+}
+
+export async function authenticate(
+    prevState: string | undefined,
+    formData: FormData,
+) {
+    try {
+        await signIn('credentials', formData);
+    } catch (error) {
+        if (error instanceof AuthError) {
+            switch (error.type) {
+                case 'CredentialsSignin':
+                    return 'Invalid credentials.';
+                default:
+                    return 'Something went wrong.';
+            }
+        }
+        throw error;
+    }
+}
+
+export async function deleteExpense(id: string) {
+
+    try {
+        await sql`DELETE FROM expenses WHERE id = ${id}`;
+    } catch (error) {
+        return { message: 'Database Error: Failed to Delete Expense.' };
+    }
+
+    revalidatePath('/dashboard/expense');
+}
+

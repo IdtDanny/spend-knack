@@ -10,7 +10,7 @@ export default async function LatestExpenses() {
     return (
         <div className="flex w-full flex-col md:col-span-4">
             <h2 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
-                Latest Invoices
+                Latest Expense Records
             </h2>
             <div className="flex grow flex-col justify-between rounded-xl bg-gray-50 p-4">
                 {/* NOTE: Uncomment this code in Chapter 9 */}
@@ -29,12 +29,14 @@ export default async function LatestExpenses() {
                             >
                                 <div className="flex items-center">
                                     <div className="min-w-0">
-                                        <p className="truncate text-sm font-semibold md:text-base">
-                                            {expense.reason}
-                                        </p>
-                                        <p className="hidden text-sm text-gray-500 sm:block">
-                                            {expense.issued_to}
-                                        </p>
+                                        <div>
+                                            <p className="truncate text-sm font-semibold md:text-base">
+                                                {expense.reason}
+                                            </p>
+                                            <p className="text-sm text-gray-500 sm:block">
+                                                {expense.issued_to}
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                                 <p

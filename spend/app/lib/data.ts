@@ -307,7 +307,7 @@ export async function fetchExpensesById(id: string) {
     const expense = data.rows.map((expense) => ({
       ...expense,
       // Convert amount from cents to dollars
-      amount: expense.amount / 100,
+      // amount: expense.amount / 100,
     }));
 
     return expense[0];

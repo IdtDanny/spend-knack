@@ -85,6 +85,8 @@ export async function updateInvoice(
         status: formData.get('status'),
     });
 
+    console.log(validatedFields);
+
     if (!validatedFields.success) {
         return {
             errors: validatedFields.error.flatten().fieldErrors,
@@ -149,3 +151,4 @@ export async function deleteExpense(id: string) {
 
     revalidatePath('/dashboard/expense');
 }
+
