@@ -1,15 +1,15 @@
 import Pagination from '@/app/ui/invoices/pagination';
 import Search from '@/app/ui/search';
-import { ExpensesTable } from '@/app/ui/invoices/table-expense';
-import { CreateExpense } from '@/app/ui/invoices/buttons';
+import { ReasonTable } from '@/app/ui/invoices/table-expense';
+import { CreateReason } from '@/app/ui/invoices/buttons';
 import { lusitana } from '@/app/ui/fonts';
-import { ExpensesTableSkeleton } from '@/app/ui/skeletons';
+import { ReasonsTableSkeleton } from '@/app/ui/skeletons';
 import { Suspense } from 'react';
-import { fetchExpensesPages } from '@/app/lib/data';
+import { fetchReasonPages } from '@/app/lib/data';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Expenses',
+    title: 'Reason',
 };
 
 export default async function Page({
@@ -23,19 +23,19 @@ export default async function Page({
     const query = searchParams?.query || '';
     const currentPage = Number(searchParams?.page) || 1;
 
-    const totalPages = await fetchExpensesPages(query);
+    const totalPages = await fetchReasonPages(query);
 
     return (
         <div className="w-full">
             <div className="flex w-full items-center justify-between">
-                <h1 className={`${lusitana.className} text-2xl`}>Expenses</h1>
+                <h1 className={`${lusitana.className} text-2xl`}>Reason</h1>
             </div>
             <div className="mt-5 flex items-center justify-between gap-2 md:mt-8">
-                <Search placeholder="Search expenses..." />
-                <CreateExpense />
+                <Search placeholder="Search reason..." />
+                <CreateReason />
             </div>
-            <Suspense key={query + currentPage} fallback={<ExpensesTableSkeleton />}>
-                <ExpensesTable query={query} currentPage={currentPage} />
+            <Suspense key={query + currentPage} fallback={<ReasonsTableSkeleton />}>
+                <ReasonTable query={query} currentPage={currentPage} />
             </Suspense>
             <div className="mt-5 flex w-full justify-center">
                 <Pagination totalPages={totalPages} />

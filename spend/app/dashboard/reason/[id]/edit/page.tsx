@@ -1,6 +1,6 @@
-import { EditExpenseForm } from '@/app/ui/invoices/edit-form-expense';
+import { EditReasonForm } from '@/app/ui/invoices/edit-form-expense';
 import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
-import { fetchExpensesById, fetchReason } from '@/app/lib/data';
+import { fetchReasonsById, fetchReason } from '@/app/lib/data';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default async function Page({ params }: { params: { id: string } }) {
     const id = params.id;
     const [expense, reason] = await Promise.all([
-        fetchExpensesById(id),
+        fetchReasonsById(id),
         fetchReason(),
     ]);
 
@@ -23,15 +23,15 @@ export default async function Page({ params }: { params: { id: string } }) {
         <main>
             <Breadcrumbs
                 breadcrumbs={[
-                    { label: 'Expenses', href: '/dashboard/expense' },
+                    { label: 'Expenses', href: '/dashboard/reason' },
                     {
-                        label: 'Edit Expense',
-                        href: '/dashboard/expense/${id}/edit',
+                        label: 'Edit Reason',
+                        href: '/dashboard/reason/${id}/edit',
                         active: true,
                     },
                 ]}
             />
-            <EditExpenseForm expense={expense} reasons={reason} />
+            <EditReasonForm expense={expense} reasons={reason} />
         </main>
     );
 }

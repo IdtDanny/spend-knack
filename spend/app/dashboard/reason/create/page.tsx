@@ -1,4 +1,4 @@
-import { FormExpense } from '@/app/ui/invoices/create-form-expense';
+import { FormReason } from '@/app/ui/invoices/create-form-expense';
 import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
 import { fetchReason } from '@/app/lib/data';
 import { Metadata } from 'next';
@@ -14,15 +14,15 @@ export default async function Page() {
         <main>
             <Breadcrumbs
                 breadcrumbs={[
-                    { label: 'Expenses', href: '/dashboard/expense' },
+                    { label: 'Expenses', href: '/dashboard/reason' },
                     {
-                        label: 'Add Expense',
-                        href: '/dashboard/expense/create',
+                        label: 'Create Reason',
+                        href: '/dashboard/reason/create',
                         active: true,
                     }
                 ]}
             />
-            <FormExpense customers={customers} />
+            <FormReason customers={customers} />
         </main>
     );
 }
