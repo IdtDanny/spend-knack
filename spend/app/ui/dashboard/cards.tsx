@@ -12,7 +12,8 @@ const iconMap = {
     pending: ClockIcon,
     invoices: InboxIcon,
 };
-import { fetchCardData } from '@/app/lib/data';
+import { fetchCardData, fetchCardDataTemp } from '@/app/lib/data';
+import { formatCurrency } from '@/app/lib/utils';
 
 export default async function CardWrapper() {
 
@@ -23,14 +24,20 @@ export default async function CardWrapper() {
         numberOfCustomers
     } = await fetchCardData();
 
+    const {
+        totalExpensesAmount,
+        numberOfExpenses,
+        numberOfReasons,
+    } = await fetchCardDataTemp();
+
     return (
         <>
             {/* NOTE: Uncomment this code in Chapter 9 */}
 
-            <Card title="Collected" value={totalPaidInvoices} type="collected" />
-            <Card title="Pending" value={totalPendingInvoices} type="pending" />
-            <Card title="Total Invoices" value={numberOfInvoices} type="invoices" />
-            <Card title="Total Customers" value={numberOfCustomers} type="customers" />
+            {/* <Card title="Collected" value={totalExpensesAmount} type="collected" /> */}
+            <Card title="Total Expenses" value={totalExpensesAmount} type="pending" />
+            <Card title="Total Reasons" value={numberOfReasons} type="invoices" />
+            <Card title="Number of Expenses" value={numberOfExpenses} type="customers" />
         </>
     );
 }

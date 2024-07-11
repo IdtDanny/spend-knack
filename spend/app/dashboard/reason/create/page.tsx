@@ -1,6 +1,5 @@
 import { FormReason } from '@/app/ui/invoices/create-form-expense';
 import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
-import { fetchReason } from '@/app/lib/data';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -8,7 +7,6 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-    const customers = await fetchReason();
 
     return (
         <main>
@@ -22,7 +20,7 @@ export default async function Page() {
                     }
                 ]}
             />
-            <FormReason customers={customers} />
+            <FormReason />
         </main>
     );
 }

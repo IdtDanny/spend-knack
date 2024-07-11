@@ -8,6 +8,7 @@ import {
   LatestInvoiceRaw,
   LatestExpenseRaw,
   ExpensesTable,
+  ReasonTable,
   Revenue,
   user,
   ReasonField,
@@ -351,5 +352,99 @@ export async function fetchLatestExpenses() {
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch the latest expenses.');
+  }
+}
+
+// Fetch Reason
+
+const REASON_PER_PAGE = 6;
+export async function fetchFilteredReason(
+  query: string,
+  currentPage: number,
+) {
+  const offset = (currentPage - 1) * REASON_PER_PAGE;
+
+  try {
+    const reason = await sql<ReasonTable>`
+      SELECT *
+      FROM reason
+      WHERE
+        reason.reason ILIKE ${`%${query}%`}
+      ORDER BY reason.date DESC
+      LIMIT ${REASON_PER_PAGE} OFFSET ${offset}
+    `;
+
+    return reason.rows;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch reason record.');
+  }
+}
+
+export async function fetchReasonPages(query: string) {
+  try {
+    const count = await sql`SELECT COUNT(*)
+    FROM reason
+    WHERE
+      reason.reason ILIKE ${`%${query}%`} OR
+      reason.date::text ILIKE ${`%${query}%`}
+  `;
+
+    const totalPages = Math.ceil(Number(count.rows[0].count) / REASON_PER_PAGE);
+    return totalPages;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch total number of reasons.');
+  }
+}
+
+export async function fetchReasonsById(id: string) {
+  try {
+    const data = await sql<ExpenseForm>`
+      SELECT *
+      FROM reason
+      WHERE reason.id = ${id};
+    `;
+
+    const reason = data.rows.map((reason) => ({
+      ...reason,
+      // Convert amount from cents to dollars
+      // amount: expense.amount / 100,
+    }));
+
+    return reason[0];
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch reason.');
+  }
+}
+
+export async function fetchCardDataTemp() {
+  try {
+    // You can probably combine these into a single SQL query
+    // However, we are intentionally splitting them to demonstrate
+    // how to initialize multiple queries in parallel with JS.
+    const expensesCountPromise = sql`SELECT COUNT(*) FROM expenses`;
+    const reasonsCountPromise = sql`SELECT COUNT(*) FROM reason`;
+    const totalExpenses = sql`SELECT SUM(amount) FROM expenses`;
+
+    const data = await Promise.all([
+      expensesCountPromise,
+      reasonsCountPromise,
+      totalExpenses,
+    ]);
+
+    const numberOfExpenses = Number(data[0].rows[0].count ?? '0');
+    const numberOfReasons = Number(data[1].rows[0].count ?? '0');
+    const totalExpensesAmount = formatCurrency(data[2].rows[0].sum ?? '0');
+
+    return {
+      numberOfReasons,
+      numberOfExpenses,
+      totalExpensesAmount,
+    };
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch card data.');
   }
 }

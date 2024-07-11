@@ -77,6 +77,12 @@ export type ExpensesTable = {
   date: string;
 };
 
+export type ReasonTable = {
+  id: string;
+  reason: string;
+  date: string;
+};
+
 export type CustomersTableType = {
   id: string;
   name: string;
@@ -105,6 +111,7 @@ export type CustomerField = {
 export type ReasonField = {
   id: string;
   reason: string;
+  date: string;
 };
 
 export type InvoiceForm = {
@@ -119,5 +126,11 @@ export type ExpenseForm = {
   reason: string;
   amount: number;
   issued_to: string;
+  date: string;
+};
+
+export type ReasonForm = {
+  id: string;
+  reason: string;
   date: string;
 };

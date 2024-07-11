@@ -10,10 +10,10 @@ import {
   UserCircleIcon,
 } from '@heroicons/react/24/outline';
 import { Button } from '@/app/ui/button';
-import { createExpense, State } from '@/app/lib/actions-expense';
+import { createReason, createExpense, State } from '@/app/lib/actions-expense';
 import { useActionState } from 'react';
 
-export default function Form({ customers }: { customers: ReasonField[] }) {
+export function FormExpense({ customers }: { customers: ReasonField[] }) {
   const initialState: State = { message: null, errors: {} };
 
   const [state, formAction] = useActionState(createExpense, initialState);
@@ -119,6 +119,58 @@ export default function Form({ customers }: { customers: ReasonField[] }) {
       <div className="mt-6 flex justify-end gap-4">
         <Link
           href="/dashboard/expense"
+          className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
+        >
+          Cancel
+        </Link>
+        <Button type="submit">Add Expense</Button>
+      </div>
+    </form>
+  );
+}
+
+export function FormReason() {
+  const initialState: State = { message: null, errors: {} };
+
+  const [state, formAction] = useActionState(createReason, initialState);
+
+  return (
+    <form action={createReason}>
+      <div className="rounded-md bg-gray-50 p-4 md:p-6">
+
+        {/* Expense Issued_to */}
+        <div className="mb-4">
+          <label htmlFor="reason" className="mb-2 block text-sm font-medium">
+            Enter Issuee
+          </label>
+          <div className="relative mt-2 rounded-md">
+            <div className="relative">
+              <input
+                id="reason"
+                name="reason"
+                type="text"
+                placeholder="Enter a Reason"
+                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                required
+                aria-describedby='reason-error'
+              />
+              <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+            </div>
+            <div id='reason-error' aria-live='polite' aria-atomic='true'>
+              {state.errors?.reason &&
+                state.errors.reason.map((error: string) => (
+                  <p className='mt-2 text-sm text-red-500' key={error}>
+                    {error}
+                  </p>
+                ))}
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div className="mt-6 flex justify-end gap-4">
+        <Link
+          href="/dashboard/reason"
           className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
         >
           Cancel

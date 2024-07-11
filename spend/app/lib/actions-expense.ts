@@ -24,6 +24,22 @@ const FormSchema = z.object({
 
 const CreateExpense = FormSchema.omit({ id: true, date: true });
 
+const CreateReason = z.object({
+    id: z.string(),
+    reason: z.string({
+        invalid_type_error: 'Please select a reason.',
+    }),
+    date: z.string(),
+}).omit({ id: true, date: true });
+
+const UpdateReason = z.object({
+    id: z.string(),
+    reason: z.string({
+        invalid_type_error: 'Please select a reason.',
+    }),
+    date: z.string(),
+}).omit({ id: true, date: true });
+
 // Using Zod to update the expected types
 const UpdateExpense = FormSchema.omit({ id: true, date: true });
 
@@ -143,3 +159,82 @@ export async function deleteExpense(id: string) {
     revalidatePath('/dashboard/expense');
 }
 
+export async function deleteReason(id: string) {
+
+    try {
+        await sql`DELETE FROM reason WHERE id = ${id}`;
+    } catch (error) {
+        return { message: 'Database Error: Failed to Delete Reason.' };
+    }
+
+    revalidatePath('/dashboard/reason');
+}
+
+export async function createReason(prevState: State, formData: FormData) {
+    // Validate form fields using Zod
+    const validatedFields = CreateReason.safeParse({
+        reason: formData.get('reason')
+    });
+
+    if (!validatedFields.success) {
+        return {
+            errors: validatedFields.error.flatten().fieldErrors,
+            message: 'Missing Fields. Failed to Create a reason.',
+        }
+    }
+
+    // Prepare data for insertion into database
+    const { reason } = validatedFields.data;
+    // const amountInCents = amount * 100; // Converting money to cents
+    const date = new Date().toISOString().split('T')[0];
+    // console.log(rawFormData);
+
+    // Insert data into database
+    try {
+        await sql`
+        INSERT INTO reason (reason, date)
+        VALUES (${reason}, ${date})
+        `;
+    } catch (error) {
+        // if a database error occurs, return a more specific error.
+        return { message: 'Database Error: Failed to Create Reason.' };
+    }
+
+    // Revalidate the cache for the invoices age and redirect the user.
+    revalidatePath('/dashboard/reason');
+    redirect('/dashboard/reason');
+}
+
+export async function updateReason(
+    id: string,
+    prevState: State,
+    formData: FormData,
+) {
+    const validatedFields = UpdateReason.safeParse({
+        reason: formData.get('reason')
+    });
+
+    if (!validatedFields.success) {
+        return {
+            errors: validatedFields.error.flatten().fieldErrors,
+            message: 'Missing Fields. Failed to Update Reason.',
+        };
+    }
+
+    const { reason } = validatedFields.data;
+    // const amountInCents = amount * 100;
+    const date = new Date().toISOString().split('T')[0];
+
+    try {
+        await sql`
+        UPDATE reason
+        SET reason = ${reason} date = ${date}
+        WHERE id = ${id}
+        `;
+    } catch (error) {
+        return { message: 'Database Error: Failed to Update Reason.' };
+    }
+
+    revalidatePath('/dashboard/reason');
+    redirect('/dashboard/reason');
+}

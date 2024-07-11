@@ -17,11 +17,7 @@ import { AccountSetting02Icon, AffiliateIcon } from '@/app/ui/dashboard/icon-tem
 // Depending on the size of the application, this would be stored in a database.
 const links = [
   { name: 'Home', href: '/dashboard', icon: HomeIcon },
-  {
-    name: 'Invoices',
-    href: '/dashboard/invoices',
-    icon: DocumentDuplicateIcon,
-  },
+  // { name: 'Invoices', href: '/dashboard/invoices', icon: DocumentDuplicateIcon },
   {
     name: 'Reason',
     href: '/dashboard/reason',
@@ -34,7 +30,7 @@ const links = [
     icon: CreditCardIcon,
     // icon: AffiliateIcon,
   },
-  { name: 'Customers', href: '/dashboard/customers', icon: UserGroupIcon },
+  // { name: 'Customers', href: '/dashboard/customers', icon: UserGroupIcon },
   // { name: 'My Profile', href: '/dashboard/profile', icon: AccountSetting02Icon },
   { name: 'My Profile', href: '/dashboard/profile', icon: UserIcon },
 ];

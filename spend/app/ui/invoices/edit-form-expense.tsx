@@ -13,19 +13,13 @@ import { Button } from '@/app/ui/button';
 import { updateExpense, State } from '@/app/lib/actions-expense';
 import { useActionState } from 'react';
 
-export default function EditExpenseForm({
+export function EditExpenseForm({
     expense,
     reasons,
 }: {
     expense: ExpenseForm;
     reasons: ReasonField[];
 }) {
-
-    console.log(expense.id);
-    console.log(expense.reason);
-    console.log(expense.amount);
-    console.log(expense.issued_to);
-    console.log('------');
 
     const initialState = { message: null, errors: {} };
     const updateExpenseWithId = updateExpense.bind(null, expense.id);

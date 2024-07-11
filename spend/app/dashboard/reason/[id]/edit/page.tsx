@@ -1,4 +1,4 @@
-import { EditReasonForm } from '@/app/ui/invoices/edit-form-expense';
+import { EditExpenseForm } from '@/app/ui/invoices/edit-form-expense';
 import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
 import { fetchReasonsById, fetchReason } from '@/app/lib/data';
 import { notFound } from 'next/navigation';
@@ -23,7 +23,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         <main>
             <Breadcrumbs
                 breadcrumbs={[
-                    { label: 'Expenses', href: '/dashboard/reason' },
+                    { label: 'Reason', href: '/dashboard/reason' },
                     {
                         label: 'Edit Reason',
                         href: '/dashboard/reason/${id}/edit',
@@ -31,7 +31,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                     },
                 ]}
             />
-            <EditReasonForm expense={expense} reasons={reason} />
+            <EditExpenseForm expense={expense} reasons={reason} />
         </main>
     );
 }
