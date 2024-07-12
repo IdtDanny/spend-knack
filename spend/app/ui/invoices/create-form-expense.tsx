@@ -10,7 +10,7 @@ import {
   UserCircleIcon,
 } from '@heroicons/react/24/outline';
 import { Button } from '@/app/ui/button';
-import { createReason, createExpense, State } from '@/app/lib/actions-expense';
+import { createReason, createExpense, State, StateRe } from '@/app/lib/actions-expense';
 import { useActionState } from 'react';
 
 export function FormExpense({ customers }: { customers: ReasonField[] }) {
@@ -130,12 +130,12 @@ export function FormExpense({ customers }: { customers: ReasonField[] }) {
 }
 
 export function FormReason() {
-  const initialState: State = { message: null, errors: {} };
+  const initialState: StateRe = { message: null, errors: {} };
 
   const [state, formAction] = useActionState(createReason, initialState);
 
   return (
-    <form action={createReason}>
+    <form action={formAction}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
 
         {/* Expense Issued_to */}
@@ -175,7 +175,7 @@ export function FormReason() {
         >
           Cancel
         </Link>
-        <Button type="submit">Add Expense</Button>
+        <Button type="submit">Add Reason</Button>
       </div>
     </form>
   );

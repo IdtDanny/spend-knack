@@ -52,6 +52,14 @@ export type State = {
     message?: string | null;
 };
 
+export type StateRe = {
+    errors?: {
+        reason?: string[];
+    };
+    message?: string | null;
+};
+
+
 export async function createExpense(prevState: State, formData: FormData) {
     // Validate form fields using Zod
     const validatedFields = CreateExpense.safeParse({
@@ -170,10 +178,11 @@ export async function deleteReason(id: string) {
     revalidatePath('/dashboard/reason');
 }
 
-export async function createReason(prevState: State, formData: FormData) {
+export async function createReason(prevState: StateRe, formData: FormData) {
     // Validate form fields using Zod
     const validatedFields = CreateReason.safeParse({
-        reason: formData.get('reason')
+        // id: formData.get('id'),
+        reason: formData.get('reason'),
     });
 
     if (!validatedFields.success) {

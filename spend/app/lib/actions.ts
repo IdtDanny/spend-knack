@@ -22,6 +22,19 @@ const FormSchema = z.object({
     date: z.string(),
 });
 
+const AddUser = z.object({
+    id: z.string(),
+    name: z.string({
+        invalid_type_error: 'Please select a customer.',
+    }),
+    email: z.string({
+        invalid_type_error: 'Please select a customer.',
+    }),
+    password: z.string({
+        invalid_type_error: 'Please select a customer.',
+    }),
+}).omit({ id: true });
+
 const CreateInvoice = FormSchema.omit({ id: true, date: true });
 
 // Using Zod to update the expected types
@@ -32,6 +45,15 @@ export type State = {
         customerId?: string[];
         amount?: string[];
         status?: string[];
+    };
+    message?: string | null;
+};
+
+export type StateUser = {
+    errors?: {
+        name?: string[];
+        email?: string[];
+        password?: string[];
     };
     message?: string | null;
 };
@@ -152,3 +174,39 @@ export async function deleteExpense(id: string) {
     revalidatePath('/dashboard/expense');
 }
 
+export async function addUser(prevState: StateUser, formData: FormData) {
+    // Validate form fields using Zod
+
+    console.log('Done');
+
+    const validatedFields = AddUser.safeParse({
+        name: formData.get('name'),
+        email: formData.get('email'),
+        password: formData.get('password'),
+    });
+
+    console.log(validatedFields);
+
+    if (!validatedFields.success) {
+        return {
+            errors: validatedFields.error.flatten().fieldErrors,
+            message: 'Missing Fields. Failed to Add User.',
+        }
+    }
+
+    const { name, email, password } = validatedFields.data;
+    // const date = new Date().toISOString().split('T')[0];
+
+    // Insert data into database
+    try {
+        await sql`
+        INSERT INTO users (name, email, password)
+        VALUES (${name}, ${email}, ${password})
+        `;
+    } catch (error) {
+        return { message: 'Database Error: Failed to Add User.' };
+    }
+
+    revalidatePath('/');
+    redirect('/');
+}
