@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { lusitana } from '@/app/ui/fonts';
 import { fetchProfileTemp } from '@/app/lib/data';
 
-export default async function ProfileTemp() {
+export async function ProfileTemp() {
 
     const profileTemp = await fetchProfileTemp();
 

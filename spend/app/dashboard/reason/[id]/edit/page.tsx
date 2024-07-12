@@ -1,5 +1,5 @@
-import { EditExpenseForm } from '@/app/ui/invoices/edit-form-expense';
-import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
+import { EditExpenseForm } from '@/app/ui/expenses/edit-form-expense';
+import Breadcrumbs from '@/app/ui/expenses/breadcrumbs';
 import { fetchReasonsById, fetchReason } from '@/app/lib/data';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';

@@ -1,4 +1,4 @@
-import { UpdateExpense, DeleteExpense, UpdateReason, DeleteReason } from '@/app/ui/invoices/buttons';
+import { UpdateExpense, DeleteExpense, UpdateReason, DeleteReason } from '@/app/ui/expenses/buttons';
 import { formatDateToLocal, formatCurrency } from '@/app/lib/utils';
 import { fetchFilteredExpenses, fetchFilteredReason } from '@/app/lib/data';
 

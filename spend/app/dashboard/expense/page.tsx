@@ -1,7 +1,7 @@
-import Pagination from '@/app/ui/invoices/pagination';
+import Pagination from '@/app/ui/expenses/pagination';
 import Search from '@/app/ui/search';
-import { ExpensesTable } from '@/app/ui/invoices/table-expense';
-import { CreateExpense } from '@/app/ui/invoices/buttons';
+import { ExpensesTable } from '@/app/ui/expenses/table-expense';
+import { CreateExpense } from '@/app/ui/expenses/buttons';
 import { lusitana } from '@/app/ui/fonts';
 import { ExpensesTableSkeleton } from '@/app/ui/skeletons';
 import { Suspense } from 'react';
