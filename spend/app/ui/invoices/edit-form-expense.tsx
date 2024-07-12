@@ -21,7 +21,7 @@ export function EditExpenseForm({
     reasons: ReasonField[];
 }) {
 
-    const initialState = { message: null, errors: {} };
+    const initialState: State = { message: null, errors: {} };
     const updateExpenseWithId = updateExpense.bind(null, expense.id);
     const [state, formAction] = useActionState(updateExpenseWithId, initialState);
 
