@@ -339,7 +339,7 @@ export async function fetchReason() {
 export async function fetchLatestExpenses() {
   try {
     const data = await sql<LatestExpenseRaw>`
-      SELECT expenses.id, expenses.reason, expenses.amount, expenses.issued_to, expenses.date
+      SELECT *
       FROM expenses
       ORDER BY expenses.date DESC
       LIMIT 5`;
