@@ -11,17 +11,13 @@ import {
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
-import { AccountSetting02Icon, AffiliateIcon } from '@/app/ui/dashboard/icon-template';
 
 // Map of links to display in the side navigation.
 // Depending on the size of the application, this would be stored in a database.
 const links = [
   { name: 'Home', href: '/dashboard', icon: HomeIcon },
-  // { name: 'Invoices', href: '/dashboard/invoices', icon: DocumentDuplicateIcon },
   { name: 'Reason', href: '/dashboard/reason', icon: ArchiveBoxIcon },
   { name: 'Expenses', href: '/dashboard/expense', icon: CreditCardIcon },
-  // { name: 'Customers', href: '/dashboard/customers', icon: UserGroupIcon },
-  // { name: 'My Profile', href: '/dashboard/profile', icon: AccountSetting02Icon },
   { name: 'My Profile', href: '/dashboard/profile', icon: UserIcon },
 ];
 
