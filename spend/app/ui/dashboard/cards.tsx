@@ -17,12 +17,12 @@ import { formatCurrency } from '@/app/lib/utils';
 
 export default async function CardWrapper() {
 
-    const {
-        totalPaidInvoices,
-        totalPendingInvoices,
-        numberOfInvoices,
-        numberOfCustomers
-    } = await fetchCardData();
+    // const {
+    //     totalPaidInvoices,
+    //     totalPendingInvoices,
+    //     numberOfInvoices,
+    //     numberOfCustomers
+    // } = await fetchCardData();
 
     const {
         totalExpensesAmount,
