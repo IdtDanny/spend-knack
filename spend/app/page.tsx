@@ -20,10 +20,9 @@ export default function Page() {
 
                     {/* <div className="relative w-0 h-0 border-l-[15px] border-r-[15px] border-b-[26px] border-l-transparent border-r-transparent border-b-black" /> */}
                     
-                    <p className={`${lusitana.className} text-xl text-gray-800 md:text-xl md:leading-normal`}><strong>Welcome to SpendKnack.</strong>
                     <p className={`${lusitana.className} text-xl text-gray-800 md:text-xl md:leading-normal`}>
+                        <strong>Welcome to SpendKnack.</strong> <br/>
                         Transform your financial journey with our innovative solution, crafted to simplify budgeting, saving, and expense tracking.
-                    </p>
                     </p>
                     <div className='flex gap-2'>
                         <Link href="login" className="flex items-center gap-5 self-start rounded-lg bg-teal-500 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-teal-800 md:text-base">
