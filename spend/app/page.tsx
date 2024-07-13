@@ -26,10 +26,10 @@ export default function Page() {
                     </p>
                     </p>
                     <div className='flex gap-2'>
-                        <Link href="/login" className="flex items-center gap-5 self-start rounded-lg bg-teal-500 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-teal-800 md:text-base">
+                        <Link href="login" className="flex items-center gap-5 self-start rounded-lg bg-teal-500 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-teal-800 md:text-base">
                             <span>Log in</span> <ArrowRightIcon className="w-5 md:w-6" />
                         </Link>
-                        <Link href="/register" className="flex items-center gap-5 self-start rounded-lg bg-orange-400 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-orange-800 md:text-base">
+                        <Link href="register" className="flex items-center gap-5 self-start rounded-lg bg-orange-400 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-orange-800 md:text-base">
                             <span>Register</span> <UserPlusIcon className="w-5 md:w-6" />
                         </Link>
                     </div>
