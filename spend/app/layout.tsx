@@ -11,8 +11,8 @@ export const metadata: Metadata = {
         template: '%s | SpendKnack',
         default: 'SpendKnack',
     },
-    description: 'The official Next.js Learn Dashboard built with App Router.',
-    metadataBase: new URL('https://next-learn-dashboard.vercel.sh'),
+    description: 'The official SpendKnack built with App Router.',
+    metadataBase: new URL('https://spend-knack.vercel.app/'),
 };
 
 
