@@ -7,6 +7,7 @@ import { redirect } from 'next/navigation';
 import { error } from 'console';
 import { signIn } from '@/auth';
 import { AuthError } from 'next-auth';
+import bcrypt from 'bcrypt';
 
 const FormSchema = z.object({
     id: z.string(),
@@ -33,6 +34,9 @@ const AddUser = z.object({
     password: z.string({
         invalid_type_error: 'Please select a customer.',
     }),
+    confirmPassword: z.string({
+        invalid_type_error: 'Please select a customer.',
+    }),
 }).omit({ id: true });
 
 const CreateInvoice = FormSchema.omit({ id: true, date: true });
@@ -54,6 +58,7 @@ export type StateUser = {
         name?: string[];
         email?: string[];
         password?: string[];
+        confirmPassword?: string[];
     };
     message?: string | null;
 };
@@ -183,9 +188,10 @@ export async function addUser(prevState: StateUser, formData: FormData) {
         name: formData.get('name'),
         email: formData.get('email'),
         password: formData.get('password'),
+        confirmPassword: formData.get('password'),
     });
 
-    console.log(validatedFields);
+    console.log(validatedFields.data?.password);
 
     if (!validatedFields.success) {
         return {
@@ -194,17 +200,26 @@ export async function addUser(prevState: StateUser, formData: FormData) {
         }
     }
 
-    const { name, email, password } = validatedFields.data;
-    // const date = new Date().toISOString().split('T')[0];
+    const password1 = validatedFields.data?.password;
+    const password2 = validatedFields.data?.confirmPassword;
 
-    // Insert data into database
-    try {
-        await sql`
-        INSERT INTO users (name, email, password)
-        VALUES (${name}, ${email}, ${password})
+    if (password1 == password2) {
+        const hashedPassword = await bcrypt.hash(password1, 10);
+
+
+        const { name, email, password } = validatedFields.data;
+        const date = new Date().toISOString().split('T')[0];
+        const image_url = '/customers/evil-rabbit.png';
+
+        // Insert data into database
+        try {
+            await sql`
+        INSERT INTO users (name, email, password, image_url, date)
+        VALUES (${name}, ${email}, ${hashedPassword}, ${image_url}, ${date})
         `;
-    } catch (error) {
-        return { message: 'Database Error: Failed to Add User.' };
+        } catch (error) {
+            return { message: 'Database Error: Failed to Add User.' };
+        }
     }
 
     revalidatePath('/');
