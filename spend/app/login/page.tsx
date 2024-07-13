@@ -1,7 +1,7 @@
 import AcmeLogo from "@/app/ui/acme-logo";
 import { LoginForm } from "@/app/ui/login-form";
 import { Metadata } from 'next';
-import { CopyrightIcon } from "../ui/dashboard/icon-template";
+import { CopyrightIcon } from "@/app/ui/dashboard/icon-template";
 
 export const metadata: Metadata = {
     title: 'Login',
