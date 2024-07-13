@@ -69,9 +69,16 @@ export function LoginForm() {
                         </div>
                     </div>
                 </div>
-                <Button className="mt-4 w-full" aria-disabled={isPending}>
-                    Log in <ArrowRightIcon className="ml-auto h-5 w-5 text-gray-50" />
-                </Button>
+                <div className='flex gap-3 justify-end'>
+                    <Link href="/">
+                        <Cancel className="mt-4 w-full">
+                            Cancel <HandThumbDownIcon className="ml-2 h-5 w-5 text-gray-50" />
+                        </Cancel>
+                    </Link>
+                    <Button className="mt-4 w-full" aria-disabled={isPending}>
+                        Log in <ArrowRightIcon className="ml-auto h-5 w-5 text-gray-50" />
+                    </Button>
+                </div>
                 <div className="flex h-8 items-end space-x-1" aria-live='polite' aria-atomic='true'>
                     {/* Add form errors here */}
                     {errorMessage && (
